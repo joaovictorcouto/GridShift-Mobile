@@ -47,7 +47,7 @@ namespace GridShift.Editor
             Debug.Log("[GridShift] Estrutura de pastas verificada e atualizada com sucesso.");
         }
 
-        [MenuItem("Tools/GridShift/2. Gerar Estrutura de UI Canvas (Fases 1, 2 e 3)", false, 2)]
+        [MenuItem("Tools/GridShift/2. Gerar Estrutura de UI Canvas e Sistemas (Fases 1 a 4)", false, 2)]
         public static void SetupCanvasHierarchy()
         {
             // 1. Root Canvas
@@ -210,7 +210,143 @@ namespace GridShift.Editor
                 rect.anchoredPosition = Vector2.zero;
             });
 
-            // 8. UIManager GameObject
+            // 8. VictoryModal Panel (Overlay de Vitoria)
+            GameObject victoryModalGo = CreateUIElementIfNotExists(safeAreaGo.transform, "VictoryModal", rect =>
+            {
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+
+                Image bg = rect.GetComponent<Image>();
+                if (bg == null) bg = rect.gameObject.AddComponent<Image>();
+                bg.color = new Color(0.04f, 0.06f, 0.10f, 0.88f); // Overlay escuro
+            });
+
+            // Modal Card central
+            GameObject modalCardGo = CreateUIElementIfNotExists(victoryModalGo.transform, "ModalCard", rect =>
+            {
+                rect.anchorMin = new Vector2(0.5f, 0.5f);
+                rect.anchorMax = new Vector2(0.5f, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = new Vector2(720f, 560f);
+                rect.anchoredPosition = Vector2.zero;
+
+                Image cardBg = rect.GetComponent<Image>();
+                if (cardBg == null) cardBg = rect.gameObject.AddComponent<Image>();
+                cardBg.color = new Color(0.12f, 0.16f, 0.23f, 0.98f); // Slate escuro
+            });
+
+            // Titulo "VITORIA!"
+            CreateUIElementIfNotExists(modalCardGo.transform, "VictoryTitle", rect =>
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.sizeDelta = new Vector2(0f, 80f);
+                rect.anchoredPosition = new Vector2(0f, -40f);
+
+                TextMeshProUGUI tmp = rect.GetComponent<TextMeshProUGUI>();
+                if (tmp == null) tmp = rect.gameObject.AddComponent<TextMeshProUGUI>();
+                tmp.text = "VITORIA!";
+                tmp.fontSize = 52;
+                tmp.fontStyle = FontStyles.Bold;
+                tmp.alignment = TextAlignmentOptions.Center;
+                tmp.color = new Color(0.95f, 0.42f, 0.31f, 1f);
+            });
+
+            // Tempo Final
+            TextMeshProUGUI finalTimeTmp = null;
+            CreateUIElementIfNotExists(modalCardGo.transform, "FinalTimeText", rect =>
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.sizeDelta = new Vector2(0f, 60f);
+                rect.anchoredPosition = new Vector2(0f, -140f);
+
+                finalTimeTmp = rect.GetComponent<TextMeshProUGUI>();
+                if (finalTimeTmp == null) finalTimeTmp = rect.gameObject.AddComponent<TextMeshProUGUI>();
+                finalTimeTmp.text = "00:00";
+                finalTimeTmp.fontSize = 44;
+                finalTimeTmp.fontStyle = FontStyles.Bold;
+                finalTimeTmp.alignment = TextAlignmentOptions.Center;
+                finalTimeTmp.color = Color.white;
+            });
+
+            // Movimentos Finais
+            TextMeshProUGUI finalMovesTmp = null;
+            CreateUIElementIfNotExists(modalCardGo.transform, "FinalMovesText", rect =>
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.sizeDelta = new Vector2(0f, 50f);
+                rect.anchoredPosition = new Vector2(0f, -210f);
+
+                finalMovesTmp = rect.GetComponent<TextMeshProUGUI>();
+                if (finalMovesTmp == null) finalMovesTmp = rect.gameObject.AddComponent<TextMeshProUGUI>();
+                finalMovesTmp.text = "0 movimentos";
+                finalMovesTmp.fontSize = 28;
+                finalMovesTmp.alignment = TextAlignmentOptions.Center;
+                finalMovesTmp.color = new Color(0.70f, 0.76f, 0.85f, 1f);
+            });
+
+            // Recorde
+            TextMeshProUGUI bestRecordTmp = null;
+            CreateUIElementIfNotExists(modalCardGo.transform, "BestRecordText", rect =>
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.sizeDelta = new Vector2(0f, 50f);
+                rect.anchoredPosition = new Vector2(0f, -280f);
+
+                bestRecordTmp = rect.GetComponent<TextMeshProUGUI>();
+                if (bestRecordTmp == null) bestRecordTmp = rect.gameObject.AddComponent<TextMeshProUGUI>();
+                bestRecordTmp.text = "Recorde: --:-- / -- mov.";
+                bestRecordTmp.fontSize = 24;
+                bestRecordTmp.alignment = TextAlignmentOptions.Center;
+                bestRecordTmp.color = new Color(0.96f, 0.75f, 0.25f, 1f);
+            });
+
+            // Botao Jogar Novamente
+            Button playAgainBtn = null;
+            GameObject playAgainGo = CreateUIElementIfNotExists(modalCardGo.transform, "PlayAgainButton", rect =>
+            {
+                rect.anchorMin = new Vector2(0.5f, 0f);
+                rect.anchorMax = new Vector2(0.5f, 0f);
+                rect.pivot = new Vector2(0.5f, 0f);
+                rect.sizeDelta = new Vector2(380f, 80f);
+                rect.anchoredPosition = new Vector2(0f, 50f);
+
+                Image btnImg = rect.GetComponent<Image>();
+                if (btnImg == null) btnImg = rect.gameObject.AddComponent<Image>();
+                btnImg.color = new Color(0.95f, 0.42f, 0.31f, 1f);
+
+                playAgainBtn = rect.GetComponent<Button>();
+                if (playAgainBtn == null) playAgainBtn = rect.gameObject.AddComponent<Button>();
+            });
+
+            CreateUIElementIfNotExists(playAgainGo.transform, "Label", rect =>
+            {
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+
+                TextMeshProUGUI labelTmp = rect.GetComponent<TextMeshProUGUI>();
+                if (labelTmp == null) labelTmp = rect.gameObject.AddComponent<TextMeshProUGUI>();
+                labelTmp.text = "JOGAR NOVAMENTE";
+                labelTmp.fontSize = 26;
+                labelTmp.fontStyle = FontStyles.Bold;
+                labelTmp.alignment = TextAlignmentOptions.Center;
+                labelTmp.color = Color.white;
+            });
+
+            victoryModalGo.SetActive(false);
+
+            // 9. UIManager GameObject
             GameObject uiManagerGo = GameObject.Find("UIManager");
             if (uiManagerGo == null)
             {
@@ -223,8 +359,27 @@ namespace GridShift.Editor
             uiManager.SetReferences(gridController, timerText, movesText, statusText, restartBtn, btn3, btn4, btn5);
             EditorUtility.SetDirty(uiManager);
 
+            // 10. Systems GameObject (AudioManager, HapticFeedback, VictoryModalController)
+            GameObject systemsGo = GameObject.Find("Systems");
+            if (systemsGo == null)
+            {
+                systemsGo = new GameObject("Systems");
+                Undo.RegisterCreatedObjectUndo(systemsGo, "Create Systems");
+            }
+
+            AudioManager audioMgr = systemsGo.GetComponent<AudioManager>();
+            if (audioMgr == null) audioMgr = systemsGo.AddComponent<AudioManager>();
+
+            HapticFeedback haptic = systemsGo.GetComponent<HapticFeedback>();
+            if (haptic == null) haptic = systemsGo.AddComponent<HapticFeedback>();
+
+            VictoryModalController victoryCtrl = systemsGo.GetComponent<VictoryModalController>();
+            if (victoryCtrl == null) victoryCtrl = systemsGo.AddComponent<VictoryModalController>();
+            victoryCtrl.SetReferences(gridController, uiManager, audioMgr, haptic, victoryModalGo, finalTimeTmp, finalMovesTmp, bestRecordTmp, playAgainBtn);
+            EditorUtility.SetDirty(victoryCtrl);
+
             Selection.activeGameObject = uiManagerGo;
-            Debug.Log("[GridShift] Hierarquia de Canvas, TopHUD, BoardContainer e UIManager configurada com sucesso!");
+            Debug.Log("[GridShift] Setup completo da cena (Canvas, TopHUD, Tabuleiro, Modal de Vitoria e Sistemas) configurado!");
         }
 
         [MenuItem("Tools/GridShift/3. Gerar Prefab do Tile (Fase 2)", false, 3)]
@@ -296,13 +451,13 @@ namespace GridShift.Editor
             Debug.Log($"[GridShift] Prefab do Tile gerado com sucesso em: {TilePrefabPath}");
         }
 
-        [MenuItem("Tools/GridShift/4. Executar Setup Completo (Fase 1, 2 e 3)", false, 4)]
+        [MenuItem("Tools/GridShift/4. Executar Setup Completo (Fases 1 a 4)", false, 4)]
         public static void RunFullSetup()
         {
             CreateFolderHierarchy();
             CreateTilePrefab();
             SetupCanvasHierarchy();
-            Debug.Log("[GridShift] Setup completo (Fases 1, 2 e 3) concluido!");
+            Debug.Log("[GridShift] Setup completo (Fases 1 a 4) concluido com sucesso!");
         }
 
         private static Button CreateTabButton(Transform parent, string name, string label)

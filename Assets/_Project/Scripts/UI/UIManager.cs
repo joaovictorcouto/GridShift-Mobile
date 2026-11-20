@@ -31,6 +31,10 @@ public class UIManager : MonoBehaviour
     private Image image4x4;
     private Image image5x5;
 
+    public int CurrentGridSize => currentGridSize;
+    public float ElapsedSeconds => elapsedSeconds;
+    public int MoveCount => moveCount;
+
     void Awake()
     {
         if (button3x3 != null) image3x3 = button3x3.GetComponent<Image>();
