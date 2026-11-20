@@ -2,12 +2,15 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using GridShift.UI;
 
 namespace GridShift.Editor
 {
     public static class ProjectSetupTools
     {
+        private const string TilePrefabPath = "Assets/_Project/Prefabs/Tiles/Tile.prefab";
+
         [MenuItem("Tools/GridShift/1. Recriar Pastas do Projeto", false, 1)]
         public static void CreateFolderHierarchy()
         {
@@ -44,7 +47,7 @@ namespace GridShift.Editor
             Debug.Log("[GridShift] Estrutura de pastas verificada e atualizada com sucesso.");
         }
 
-        [MenuItem("Tools/GridShift/2. Gerar Estrutura de UI Canvas (Fase 1)", false, 2)]
+        [MenuItem("Tools/GridShift/2. Gerar Estrutura de UI Canvas (Fase 1 e 2)", false, 2)]
         public static void SetupCanvasHierarchy()
         {
             // 1. Root Canvas
@@ -132,11 +135,11 @@ namespace GridShift.Editor
                 rect.anchorMin = new Vector2(0f, 0f);
                 rect.anchorMax = new Vector2(1f, 1f);
                 rect.pivot = new Vector2(0.5f, 0.5f);
-                rect.offsetMin = new Vector2(0f, 200f);  // Espaco do rodape
-                rect.offsetMax = new Vector2(0f, -320f); // Espaco do topo (header + abas)
+                rect.offsetMin = new Vector2(0f, 200f);
+                rect.offsetMax = new Vector2(0f, -320f);
             });
 
-            // 7. Board Container 1:1 com ResponsiveBoardContainer
+            // 7. Board Container 1:1 com ResponsiveBoardContainer e GridController
             CreateUIElementIfNotExists(boardAreaGo.transform, "BoardContainer", rect =>
             {
                 rect.anchorMin = new Vector2(0.5f, 0.5f);
@@ -148,6 +151,18 @@ namespace GridShift.Editor
                 if (rect.GetComponent<ResponsiveBoardContainer>() == null)
                 {
                     rect.gameObject.AddComponent<ResponsiveBoardContainer>();
+                }
+
+                GridController controller = rect.GetComponent<GridController>();
+                if (controller == null)
+                {
+                    controller = rect.gameObject.AddComponent<GridController>();
+                }
+
+                TileView prefab = AssetDatabase.LoadAssetAtPath<TileView>(TilePrefabPath);
+                if (prefab != null)
+                {
+                    controller.SetTilePrefab(prefab);
                 }
             });
 
@@ -162,7 +177,85 @@ namespace GridShift.Editor
             });
 
             Selection.activeGameObject = canvasGo;
-            Debug.Log("[GridShift] Hierarquia de Canvas, SafeArea e BoardContainer gerada com sucesso!");
+            Debug.Log("[GridShift] Hierarquia de Canvas, SafeArea, BoardContainer e GridController configurada!");
+        }
+
+        [MenuItem("Tools/GridShift/3. Gerar Prefab do Tile (Fase 2)", false, 3)]
+        public static void CreateTilePrefab()
+        {
+            if (!AssetDatabase.IsValidFolder("Assets/_Project/Prefabs/Tiles"))
+            {
+                CreateFolderHierarchy();
+            }
+
+            // Cria GameObject raiz do Tile
+            GameObject tileGo = new GameObject("Tile", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button), typeof(TileView));
+            RectTransform tileRt = tileGo.GetComponent<RectTransform>();
+            tileRt.sizeDelta = new Vector2(160f, 160f);
+
+            // Configuracao visual do background
+            Image bg = tileGo.GetComponent<Image>();
+            bg.color = new Color(0.12f, 0.16f, 0.23f, 1.0f); // Slate escuro moderno
+
+            Button btn = tileGo.GetComponent<Button>();
+            ColorBlock colors = btn.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(0.9f, 0.95f, 1f, 1f);
+            colors.pressedColor = new Color(0.7f, 0.8f, 0.95f, 1f);
+            btn.colors = colors;
+
+            // Cria filho NumberLabel com TextMeshProUGUI
+            GameObject labelGo = new GameObject("NumberLabel", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+            labelGo.transform.SetParent(tileGo.transform, false);
+
+            RectTransform labelRt = labelGo.GetComponent<RectTransform>();
+            labelRt.anchorMin = Vector2.zero;
+            labelRt.anchorMax = Vector2.one;
+            labelRt.offsetMin = Vector2.zero;
+            labelRt.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI labelTmp = labelGo.GetComponent<TextMeshProUGUI>();
+            labelTmp.text = "1";
+            labelTmp.alignment = TextAlignmentOptions.Center;
+            labelTmp.enableAutoSizing = true;
+            labelTmp.fontSizeMin = 20;
+            labelTmp.fontSizeMax = 72;
+            labelTmp.fontStyle = FontStyles.Bold;
+            labelTmp.color = new Color(0.96f, 0.98f, 1f, 1f);
+
+            // Vincula no TileView
+            TileView tileView = tileGo.GetComponent<TileView>();
+            tileView.SetReferences(labelTmp, bg);
+
+            // Salva como prefab
+            PrefabUtility.SaveAsPrefabAsset(tileGo, TilePrefabPath);
+            Object.DestroyImmediate(tileGo);
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            // Atualiza GridController na cena se existir
+            GridController controller = Object.FindAnyObjectByType<GridController>();
+            if (controller != null)
+            {
+                TileView prefab = AssetDatabase.LoadAssetAtPath<TileView>(TilePrefabPath);
+                if (prefab != null)
+                {
+                    controller.SetTilePrefab(prefab);
+                    EditorUtility.SetDirty(controller);
+                }
+            }
+
+            Debug.Log($"[GridShift] Prefab do Tile gerado com sucesso em: {TilePrefabPath}");
+        }
+
+        [MenuItem("Tools/GridShift/4. Executar Setup Completo (Fase 1 e 2)", false, 4)]
+        public static void RunFullSetup()
+        {
+            CreateFolderHierarchy();
+            CreateTilePrefab();
+            SetupCanvasHierarchy();
+            Debug.Log("[GridShift] Setup completo (Fases 1 e 2) concluido!");
         }
 
         private static GameObject CreateUIElementIfNotExists(Transform parent, string name, System.Action<RectTransform> setup)
