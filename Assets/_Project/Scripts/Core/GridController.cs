@@ -19,6 +19,7 @@ public class GridController : MonoBehaviour
     public event Action OnMoveCompleted;
     public event Action OnPuzzleSolved;
     public event Action<int> OnGridInitialized;
+    public event Action OnShuffleFinished;
 
     public int GridSize => gridSize;
     public bool IsBusy => isBusy;
@@ -209,6 +210,7 @@ public class GridController : MonoBehaviour
 
         isBusy = false;
         shuffleRoutine = null;
+        OnShuffleFinished?.Invoke();
     }
 
     private void CollectShuffleCandidates()
