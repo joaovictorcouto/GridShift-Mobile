@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>GridShift — Tactile Number Puzzle</title>
+  
+  <meta name="description" content="Sliding Tile Puzzle minimalista e tátil com variantes 3x3, 4x4 e 5x5.">
+  <meta name="theme-color" content="#0b0f19">
+
+  <!-- PWA & iOS Safari meta tags -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GridShift">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Cabeçalho Superior -->
+    <header class="app-header">
+      <div class="brand">
+        <h1 class="logo">GRID<span>SHIFT</span></h1>
+        <p class="tagline">Tactile Number Puzzle</p>
+      </div>
+
+      <!-- Seletor de Dificuldade -->
+      <nav class="difficulty-bar" aria-label="Seletor de tamanho do tabuleiro">
+        <button type="button" class="tab-btn" data-size="3">3×3</button>
+        <button type="button" class="tab-btn active" data-size="4">4×4</button>
+        <button type="button" class="tab-btn" data-size="5">5×5</button>
+      </nav>
+
+      <!-- Painel de Estatísticas -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-label">TEMPO</span>
+          <span id="timerText" class="stat-value">00:00</span>
+        </div>
+
+        <div class="status-badge" id="statusBadge">4×4</div>
+
+        <div class="stat-card">
+          <span class="stat-label">PASSOS</span>
+          <span id="movesText" class="stat-value">0</span>
+        </div>
+
+        <div class="actions-group">
+          <button type="button" id="restartBtn" class="icon-btn" title="Reiniciar Tabuleiro" aria-label="Reiniciar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.85.99 6.57 2.57L21 8"/>
+              <polyline points="21 3 21 8 16 8"/>
+            </svg>
+          </button>
+          <button type="button" id="audioToggleBtn" class="icon-btn" title="Alternar Som" aria-label="Som">
+            <svg id="soundIconOn" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <svg id="soundIconOff" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Área Central: Tabuleiro Quadrado 1:1 -->
+    <main class="board-area">
+      <div id="boardContainer" class="board-container" role="grid" aria-label="Tabuleiro GridShift">
+        <!-- As peças são injetadas dinamicamente via app.js -->
+      </div>
+    </main>
+
+    <!-- Rodapé Minimalista -->
+    <footer class="app-footer">
+      <span>Deslize as peças para organizar em ordem sequencial</span>
+    </footer>
+  </div>
+
+  <!-- Modal de Vitória -->
+  <div id="victoryModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="trophy-icon" aria-hidden="true">🏆</div>
+      <h2 id="modalTitle" class="modal-title">VITÓRIA!</h2>
+      <p class="modal-subtitle">Quebra-cabeça resolvido com sucesso.</p>
+
+      <div class="modal-stats">
+        <div class="modal-stat-box">
+          <span class="m-label">TEMPO</span>
+          <span id="finalTimeText" class="m-value">00:00</span>
+        </div>
+        <div class="modal-stat-box">
+          <span class="m-label">MOVIMENTOS</span>
+          <span id="finalMovesText" class="m-value">0</span>
+        </div>
+      </div>
+
+      <div id="bestRecordBadge" class="record-badge">
+        Recorde: 00:00 / 0 mov.
+      </div>
+
+      <button type="button" id="playAgainBtn" class="primary-btn">
+        JOGAR NOVAMENTE
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
