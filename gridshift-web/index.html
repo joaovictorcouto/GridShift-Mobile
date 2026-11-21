@@ -5,18 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>GridShift — Tactile Number Puzzle</title>
   
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <meta name="description" content="Sliding Tile Puzzle tátil com fases determinísticas, arrasto multicasas e recordes.">
   <meta name="theme-color" content="#182029">
 
+  <!-- Limpeza Imediata de Cache e Service Worker Antigo -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (var reg of registrations) {
+          reg.unregister();
+        }
+      });
+      if (window.caches) {
+        caches.keys().then(function(names) {
+          for (var name of names) caches.delete(name);
+        });
+      }
+    }
+  </script>
+
   <!-- PWA & iOS Safari meta tags -->
-  <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="apple-touch-icon" href="icon.svg">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GridShift">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.2">
 </head>
 <body>
   <div class="app-viewport">
@@ -26,7 +45,7 @@
          ==================================================================== -->
     <section id="screenMenu" class="screen-view active">
       <div class="menu-header">
-        <button type="button" id="menuThemeBtn" class="circle-btn" title="Temas" aria-label="Temas">
+        <button type="button" id="menuThemeBtn" class="circle-btn" title="Temas Visuais" aria-label="Temas">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"/>
             <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
@@ -70,7 +89,7 @@
       </div>
 
       <div class="menu-footer">
-        <span>v2.0 • Fases Determinísticas & Arrasto Multicasas</span>
+        <span>v2.2 • Menu Inicial & Fases Determinísticas</span>
       </div>
     </section>
 
@@ -84,7 +103,7 @@
             <polyline points="15 18 9 12 15 6"/>
           </svg>
         </button>
-        <h2 class="view-title">Configurar Partida</h2>
+        <h2 class="view-title">Escolher Desafio</h2>
         <div style="width: 44px;"></div>
       </header>
 
@@ -155,7 +174,7 @@
          ==================================================================== -->
     <section id="screenGame" class="screen-view">
       <header class="game-top-bar">
-        <button type="button" id="btnGameBack" class="circle-btn" title="Voltar à Seleção" aria-label="Voltar">
+        <button type="button" id="btnGameBack" class="circle-btn" title="Voltar ao Menu" aria-label="Voltar">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
@@ -209,8 +228,11 @@
       </main>
 
       <footer class="game-bottom-action">
-        <button type="button" id="btnRestartLevel" class="pill-action-btn">
+        <button type="button" id="btnRestartLevel" class="pill-action-btn secondary-action">
           Reiniciar Fase
+        </button>
+        <button type="button" id="btnPauseGameBottom" class="pill-action-btn pause-action">
+          <span>⏸</span> Pausar
         </button>
       </footer>
     </section>
@@ -338,6 +360,6 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2.2"></script>
 </body>
 </html>

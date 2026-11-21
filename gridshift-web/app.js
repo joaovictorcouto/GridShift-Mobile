@@ -33,6 +33,7 @@
   const gameLevelPill = document.getElementById('gameLevelPill');
   const btnGameAudio = document.getElementById('btnGameAudio');
   const btnPauseGame = document.getElementById('btnPauseGame');
+  const btnPauseGameBottom = document.getElementById('btnPauseGameBottom');
   const gameSubheadTitle = document.getElementById('gameSubheadTitle');
   const gameTimerText = document.getElementById('gameTimerText');
   const gameMovesText = document.getElementById('gameMovesText');
@@ -979,6 +980,13 @@
     pauseGame();
   });
 
+  if (btnPauseGameBottom) {
+    btnPauseGameBottom.addEventListener('click', () => {
+      initAudioContext();
+      pauseGame();
+    });
+  }
+
   btnRestartLevel.addEventListener('click', () => {
     restartCurrentLevel();
   });
@@ -1049,8 +1057,15 @@
   switchScreen('menu');
 
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let reg of registrations) {
+        reg.unregister();
+      }
     });
+    if (window.caches) {
+      caches.keys().then(names => {
+        for (let name of names) caches.delete(name);
+      });
+    }
   }
 })();
