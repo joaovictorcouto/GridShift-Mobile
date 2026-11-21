@@ -40,7 +40,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GridShift">
 
-  <link rel="stylesheet" href="style.css?v=3.1">
+  <link rel="stylesheet" href="style.css?v=3.2">
 </head>
 <body>
   <div class="app-viewport">
@@ -179,15 +179,16 @@
          ==================================================================== -->
     <section id="screenGame" class="screen-view">
       <header class="game-top-bar">
-        <button type="button" id="btnGameBack" class="circle-btn" title="Voltar ao Menu" aria-label="Voltar">
+        <button type="button" id="btnGameBack" class="circle-btn" title="Voltar" aria-label="Voltar">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
         </button>
 
-        <!-- Badge Central estilo Print (ex: 5X5) -->
-        <div class="game-level-pill" id="gameLevelPill">
-          5X5
+        <!-- Informações no Topo da Partida: Grade, Fase e Dificuldade -->
+        <div class="game-header-info">
+          <div class="game-level-pill" id="gameLevelPill">5X5</div>
+          <span class="game-level-meta" id="gameLevelMeta">Fase 1 • Fácil</span>
         </div>
 
         <div class="game-right-btns">
@@ -204,17 +205,16 @@
             </svg>
           </button>
           <button type="button" id="btnPauseGame" class="circle-btn" title="Pausar Jogo" aria-label="Pausar">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="10" y1="5" x2="10" y2="19"/>
-              <line x1="14" y1="5" x2="14" y2="19"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16" rx="1.5"/>
+              <rect x="14" y="4" width="4" height="16" rx="1.5"/>
             </svg>
           </button>
         </div>
       </header>
 
-      <!-- Subcabeçalho estilo Print ("Imagem objetiva" + ⏱ 01:42 + 👣 12) -->
+      <!-- HUD Stats: Cronômetro e Movimentos/Passos -->
       <div class="game-subhead">
-        <h2 class="subhead-title" id="gameSubheadTitle">Imagem objetiva</h2>
         <div class="hud-stats">
           <div class="hud-stat-item" title="Tempo">
             <span class="icon" aria-hidden="true">⏱</span>
@@ -223,19 +223,27 @@
           <div class="hud-stat-item" title="Movimentos">
             <span class="icon" aria-hidden="true">👣</span>
             <span id="gameMovesText" class="val">0</span>
+            <span class="hud-stat-unit">passos</span>
           </div>
         </div>
       </div>
 
-      <!-- Tabuleiro 1:1 Quadrado Touch com Estojo Escuro e Padding Rigoroso -->
+      <!-- Tabuleiro 1:1 Quadrado Touch com Estojo Escuro e Camada de Pré-início Desfocada -->
       <main class="board-area">
         <div id="boardContainer" class="board-container" role="grid" aria-label="Tabuleiro GridShift">
           <!-- Peças injetadas dinamicamente via JS -->
         </div>
+        <div id="boardBlurOverlay" class="board-blur-overlay">
+          <div class="prestart-card">
+            <span class="prestart-icon">🔒</span>
+            <span class="prestart-title">Fase Pronta</span>
+            <span class="prestart-hint">Toque em Começar para liberar o tabuleiro</span>
+          </div>
+        </div>
       </main>
 
-      <!-- Botão Inferior Pílula Total ("Começar" / "Reiniciar") -->
-      <footer class="game-bottom-action">
+      <!-- Botão Inferior Pílula Total ("Começar") -->
+      <footer class="game-bottom-action" id="gameBottomAction">
         <button type="button" id="btnRestartLevel" class="pill-action-btn print-bottom-btn">
           Começar
         </button>
@@ -365,6 +373,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=3.1"></script>
+  <script src="app.js?v=3.2"></script>
 </body>
 </html>

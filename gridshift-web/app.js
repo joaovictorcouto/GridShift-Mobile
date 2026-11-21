@@ -31,6 +31,7 @@
   // Tela de Jogo
   const btnGameBack = document.getElementById('btnGameBack');
   const gameLevelPill = document.getElementById('gameLevelPill');
+  const gameLevelMeta = document.getElementById('gameLevelMeta');
   const btnGameAudio = document.getElementById('btnGameAudio');
   const btnPauseGame = document.getElementById('btnPauseGame');
   const btnPauseGameBottom = document.getElementById('btnPauseGameBottom');
@@ -38,6 +39,8 @@
   const gameTimerText = document.getElementById('gameTimerText');
   const gameMovesText = document.getElementById('gameMovesText');
   const boardContainer = document.getElementById('boardContainer');
+  const boardBlurOverlay = document.getElementById('boardBlurOverlay');
+  const gameBottomAction = document.getElementById('gameBottomAction');
   const btnRestartLevel = document.getElementById('btnRestartLevel');
 
   // Modal de Pausa
@@ -91,6 +94,8 @@
   let isBusy = false;
   let isSolved = false;
   let isPaused = false;
+  let isPreStart = false;
+  let gameOriginScreen = 'menu'; // 'menu' | 'select'
 
   let tiles = []; // Objetos visuais { value, row, col, el }
   let boardMatrix = []; // [row][col]
@@ -247,8 +252,36 @@
   }
 
   // ==========================================================================
-  // RENDERIZAÇÃO DA SELEÇÃO DE FASES
+  // RENDERIZAÇÃO DA SELEÇÃO DE FASES E BUSCA DE PRÓXIMA FASE
   // ==========================================================================
+
+  function findNextUncompletedLevel() {
+    // 1. Procura na grade atual (selectedSize) a partir da dificuldade fácil
+    for (const diff of DIFFICULTIES) {
+      for (let lvl = 1; lvl <= 10; lvl++) {
+        const rec = getLevelRecord(selectedSize, diff.id, lvl);
+        if (!rec || !rec.completed) {
+          return { size: selectedSize, diff: diff.id, level: lvl };
+        }
+      }
+    }
+
+    // 2. Se completou todas as dificuldades do selectedSize, busca em outros tamanhos
+    const sizes = [3, 4, 5, 6];
+    for (const sz of sizes) {
+      for (const diff of DIFFICULTIES) {
+        for (let lvl = 1; lvl <= 10; lvl++) {
+          const rec = getLevelRecord(sz, diff.id, lvl);
+          if (!rec || !rec.completed) {
+            return { size: sz, diff: diff.id, level: lvl };
+          }
+        }
+      }
+    }
+
+    // Fallback: Fase 1 da grade/dificuldade atual
+    return { size: selectedSize, diff: 'easy', level: 1 };
+  }
 
   function renderLevelGrid() {
     levelGridContainer.innerHTML = '';
@@ -265,7 +298,11 @@
         btn.classList.add('completed');
       }
 
-      btn.textContent = i;
+      btn.innerHTML = `
+        <span class="level-num">${i}</span>
+        ${rec && rec.completed ? '<span class="level-star" aria-label="Concluída">★</span>' : ''}
+      `;
+
       btn.addEventListener('click', () => {
         initAudioContext();
         selectedLevel = i;
@@ -292,10 +329,27 @@
   }
 
   // ==========================================================================
-  // INICIALIZAÇÃO DA PARTIDA E TABULEIRO TOUCH
+  // INICIALIZAÇÃO DA PARTIDA E ESTADO DE PRÉ-INÍCIO
   // ==========================================================================
 
-  function startSelectedGame(restoreExisting = false) {
+  function setPreStartState(preStart) {
+    isPreStart = preStart;
+    if (preStart) {
+      stopTimer();
+      if (boardBlurOverlay) boardBlurOverlay.classList.remove('hidden');
+      boardContainer.classList.add('is-pre-start');
+      btnRestartLevel.classList.remove('hidden');
+      btnRestartLevel.textContent = 'Começar';
+      if (gameBottomAction) gameBottomAction.classList.remove('hidden');
+    } else {
+      if (boardBlurOverlay) boardBlurOverlay.classList.add('hidden');
+      boardContainer.classList.remove('is-pre-start');
+      btnRestartLevel.classList.add('hidden');
+      if (gameBottomAction) gameBottomAction.classList.add('hidden');
+    }
+  }
+
+  function startSelectedGame(restoreExisting = false, preStart = true) {
     if (restoreExisting) {
       const saved = JSON.parse(localStorage.getItem('gridshift_saved_session') || '{}');
       if (saved && saved.size) {
@@ -304,6 +358,7 @@
         selectedLevel = saved.level;
         currentGame = saved;
       }
+      preStart = false; // Retoma diretamente de onde parou!
     }
 
     if (!restoreExisting) {
@@ -327,14 +382,22 @@
 
     const diffObj = DIFFICULTIES.find(d => d.id === currentGame.diff) || DIFFICULTIES[0];
     gameLevelPill.textContent = `${currentGame.size}X${currentGame.size}`;
-    gameSubheadTitle.textContent = 'Imagem objetiva';
+    if (gameLevelMeta) {
+      gameLevelMeta.textContent = `Fase ${currentGame.level} • ${diffObj.label}`;
+    }
 
     gameMovesText.textContent = String(currentGame.moves);
     gameTimerText.textContent = formatTime(currentGame.seconds);
 
     isPaused = false;
     isSolved = false;
-    startTimer();
+
+    if (preStart) {
+      setPreStartState(true);
+    } else {
+      setPreStartState(false);
+      startTimer();
+    }
   }
 
   function buildGameBoard() {
@@ -413,7 +476,7 @@
     const el = tile.el;
 
     el.addEventListener('pointerdown', (e) => {
-      if (isBusy || isSolved || isPaused) return;
+      if (isBusy || isSolved || isPaused || isPreStart) return;
       initAudioContext();
 
       const emptyR = currentGame.emptyRow;
@@ -592,14 +655,17 @@
 
     gameMovesText.textContent = '0';
     gameTimerText.textContent = '00:00';
-    gameSubheadTitle.textContent = 'Imagem objetiva';
+    if (gameLevelMeta) {
+      const diffObj = DIFFICULTIES.find(d => d.id === currentGame.diff) || DIFFICULTIES[0];
+      gameLevelMeta.textContent = `Fase ${currentGame.level} • ${diffObj.label}`;
+    }
 
     isSolved = false;
     isPaused = false;
 
     buildGameBoard();
     saveActiveSession();
-    startTimer();
+    setPreStartState(true);
   }
 
   // ==========================================================================
@@ -618,14 +684,20 @@
     if (!isPaused) return;
     isPaused = false;
     pauseModal.classList.add('hidden');
-    startTimer();
+    if (!isPreStart) {
+      startTimer();
+    }
   }
 
   function exitGameToMenu() {
     pauseModal.classList.add('hidden');
     stopTimer();
     saveActiveSession();
-    switchScreen('menu');
+    if (gameOriginScreen === 'select') {
+      switchScreen('select');
+    } else {
+      switchScreen('menu');
+    }
   }
 
   // ==========================================================================
@@ -635,7 +707,8 @@
   function handleLevelVictory() {
     isSolved = true;
     stopTimer();
-    gameSubheadTitle.textContent = 'Fase Concluída!';
+    if (gameSubheadTitle) gameSubheadTitle.textContent = 'Fase Concluída!';
+    if (gameLevelMeta) gameLevelMeta.textContent = 'Fase Concluída! ★';
 
     playVictorySound();
     triggerHaptic([40, 60, 80]);
@@ -698,7 +771,7 @@
         selectedLevel = 1;
       }
     }
-    startSelectedGame(false);
+    startSelectedGame(false, true);
   }
 
   // ==========================================================================
@@ -911,12 +984,18 @@
   // Menu Principal
   btnPlayMenu.addEventListener('click', () => {
     initAudioContext();
-    switchScreen('select');
+    gameOriginScreen = 'menu';
+    const nextLvl = findNextUncompletedLevel();
+    selectedSize = nextLvl.size;
+    selectedDiff = nextLvl.diff;
+    selectedLevel = nextLvl.level;
+    startSelectedGame(false, true);
   });
 
   btnContinueGame.addEventListener('click', () => {
     initAudioContext();
-    startSelectedGame(true);
+    gameOriginScreen = 'menu';
+    startSelectedGame(true, false);
   });
 
   btnSelectLevel.addEventListener('click', () => {
@@ -967,13 +1046,20 @@
 
   btnStartGame.addEventListener('click', () => {
     initAudioContext();
-    startSelectedGame(false);
+    gameOriginScreen = 'select';
+    startSelectedGame(false, true);
   });
 
   // Tela de Jogo
   btnGameBack.addEventListener('click', () => {
     initAudioContext();
-    pauseGame();
+    stopTimer();
+    saveActiveSession();
+    if (gameOriginScreen === 'select') {
+      switchScreen('select');
+    } else {
+      switchScreen('menu');
+    }
   });
 
   btnGameAudio.addEventListener('click', toggleAudio);
@@ -991,7 +1077,14 @@
   }
 
   btnRestartLevel.addEventListener('click', () => {
-    restartCurrentLevel();
+    if (isPreStart) {
+      initAudioContext();
+      triggerHaptic(25);
+      setPreStartState(false);
+      startTimer();
+    } else {
+      restartCurrentLevel();
+    }
   });
 
   // Modal de Pausa
@@ -1023,7 +1116,11 @@
 
   btnVictoryMenu.addEventListener('click', () => {
     victoryModal.classList.add('hidden');
-    switchScreen('menu');
+    if (gameOriginScreen === 'select') {
+      switchScreen('select');
+    } else {
+      switchScreen('menu');
+    }
   });
 
   // Modal de Recordes
