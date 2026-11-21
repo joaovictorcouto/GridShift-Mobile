@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ARQUITETURA DE TEMAS GRIDSHIFT
+   SISTEMA DE TEMAS GRIDSHIFT
    ========================================================================== */
 
 :root {
@@ -9,18 +9,18 @@
   --grid-size: 5;
 }
 
-/* 1. TEMA PADRÃO: MARFIM TÁTIL (Fiel ao print do usuário) */
+/* 1. TEMA PADRÃO: MARFIM TÁTIL (Fiel ao print) */
 :root, [data-theme="tactile-ivory"] {
   --bg-canvas: #1c242e;
   --bg-gradient: radial-gradient(circle at 50% 25%, #24303d 0%, #171e27 85%);
   --header-btn-bg: #273441;
   --header-btn-border: #364657;
   --header-btn-color: #d1dbe5;
-  --diff-bg: #222d38;
-  --diff-border: #324252;
-  --diff-text: #94a3b8;
-  --diff-active-bg: #151d25;
-  --diff-active-text: #ffffff;
+  --pill-bg: #222d38;
+  --pill-border: #324252;
+  --pill-text: #94a3b8;
+  --pill-active-bg: #151d25;
+  --pill-active-text: #ffffff;
   
   --board-bg: #151c24;
   --board-border: #232d39;
@@ -40,23 +40,25 @@
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 16px rgba(231, 100, 73, 0.4);
   --action-btn-text: #ffffff;
 
+  --card-bg: #222d38;
+  --card-border: #324252;
   --text-title: #f1f5f9;
   --text-muted: #94a3b8;
   --modal-bg: #1c2530;
 }
 
-/* 2. TEMA SLATE DARK (Moderno Futurista) */
+/* 2. TEMA SLATE DARK */
 [data-theme="slate-dark"] {
   --bg-canvas: #0b0f19;
   --bg-gradient: radial-gradient(circle at 50% 20%, #19253d 0%, #0b0f19 80%);
   --header-btn-bg: #1e293b;
   --header-btn-border: #334155;
   --header-btn-color: #94a3b8;
-  --diff-bg: #131b2e;
-  --diff-border: #2a3754;
-  --diff-text: #64748b;
-  --diff-active-bg: #f97316;
-  --diff-active-text: #ffffff;
+  --pill-bg: #131b2e;
+  --pill-border: #2a3754;
+  --pill-text: #64748b;
+  --pill-active-bg: #f97316;
+  --pill-active-text: #ffffff;
   
   --board-bg: #0f1627;
   --board-border: #2a3754;
@@ -75,23 +77,25 @@
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 16px rgba(249, 115, 22, 0.4);
   --action-btn-text: #ffffff;
 
+  --card-bg: #131b2e;
+  --card-border: #2a3754;
   --text-title: #f8fafc;
   --text-muted: #94a3b8;
   --modal-bg: #131b2e;
 }
 
-/* 3. TEMA MADEIRA NOBRE (Warm Wood) */
+/* 3. TEMA MADEIRA NOBRE */
 [data-theme="classic-wood"] {
   --bg-canvas: #1f140e;
   --bg-gradient: radial-gradient(circle at 50% 20%, #342217 0%, #170e0a 80%);
   --header-btn-bg: #382419;
   --header-btn-border: #4e3323;
   --header-btn-color: #d7bba8;
-  --diff-bg: #2c1c13;
-  --diff-border: #432a1c;
-  --diff-text: #9d806d;
-  --diff-active-bg: #c47d48;
-  --diff-active-text: #ffffff;
+  --pill-bg: #2c1c13;
+  --pill-border: #432a1c;
+  --pill-text: #9d806d;
+  --pill-active-bg: #c47d48;
+  --pill-active-text: #ffffff;
   
   --board-bg: #1a100b;
   --board-border: #3d2619;
@@ -110,6 +114,8 @@
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 16px rgba(196, 125, 72, 0.4);
   --action-btn-text: #ffffff;
 
+  --card-bg: #2a1b12;
+  --card-border: #432a1c;
   --text-title: #f5e6d3;
   --text-muted: #bda28e;
   --modal-bg: #271810;
@@ -122,11 +128,11 @@
   --header-btn-bg: #14172c;
   --header-btn-border: #00e5ff55;
   --header-btn-color: #00e5ff;
-  --diff-bg: #101326;
-  --diff-border: #23294f;
-  --diff-text: #6973a6;
-  --diff-active-bg: #00e5ff;
-  --diff-active-text: #090a14;
+  --pill-bg: #101326;
+  --pill-border: #23294f;
+  --pill-text: #6973a6;
+  --pill-active-bg: #00e5ff;
+  --pill-active-text: #090a14;
   
   --board-bg: #080912;
   --board-border: #00e5ff44;
@@ -145,13 +151,15 @@
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 20px rgba(255, 0, 127, 0.4);
   --action-btn-text: #ffffff;
 
+  --card-bg: #111429;
+  --card-border: #23294f;
   --text-title: #ffffff;
   --text-muted: #8491c7;
   --modal-bg: #12152b;
 }
 
 /* ==========================================================================
-   RESET & LAYOUT BASE
+   RESET E ESTRUTURA GERAL
    ========================================================================== */
 
 *, *::before, *::after {
@@ -176,26 +184,34 @@ html, body {
   -webkit-touch-callout: none;
 }
 
-.app-container {
-  display: flex;
+.app-viewport {
+  width: 100%;
+  height: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Views de Tela */
+.screen-view {
+  display: none;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  max-width: 540px;
-  margin: 0 auto;
   padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
 }
 
-/* Barra Superior */
-.top-nav {
+.screen-view.active {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  opacity: 1;
 }
 
+/* Botões Circulares */
 .circle-btn {
   background: var(--header-btn-bg);
   border: 1px solid var(--header-btn-border);
@@ -207,66 +223,380 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.12s ease, background 0.15s ease;
+  transition: transform 0.1s ease, background 0.15s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
 }
 
 .circle-btn:active {
   transform: scale(0.92);
 }
 
-/* Badge / Seletor de Dificuldade */
-.difficulty-picker {
-  display: flex;
-  background: var(--diff-bg);
-  border: 1px solid var(--diff-border);
-  padding: 4px;
-  border-radius: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+/* Botão de Ação Primária Tátil */
+.pill-action-btn {
+  width: 100%;
+  background: var(--action-btn-bg);
+  color: var(--action-btn-text);
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 16px 24px;
+  border-radius: 36px;
+  box-shadow: var(--action-btn-shadow);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
-.diff-btn {
-  background: transparent;
-  border: none;
-  color: var(--diff-text);
-  font-weight: 800;
-  font-size: 0.82rem;
-  padding: 6px 16px;
-  border-radius: 20px;
+.pill-action-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--action-btn-bevel);
+}
+
+.pill-action-btn.pulse {
+  animation: btnPulse 2s infinite ease-in-out;
+}
+
+@keyframes btnPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.modal-secondary-btn, .menu-secondary-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-title);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
   transition: all 0.15s ease;
 }
 
-.diff-btn.active {
-  background: var(--diff-active-bg);
-  color: var(--diff-active-text);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+.modal-secondary-btn:active, .menu-secondary-btn:active {
+  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* Subcabeçalho */
-.header-status {
+/* ==========================================================================
+   1. ESTILOS DO MENU PRINCIPAL
+   ========================================================================== */
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.menu-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  margin: auto 0;
+}
+
+.hero-tile-badge {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.hero-num {
+  width: 44px;
+  height: 44px;
+  background: var(--tile-bg-gradient);
+  color: var(--tile-text);
+  border-radius: 10px;
+  box-shadow: var(--tile-shadow);
+  font-weight: 900;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--text-title);
+}
+
+.hero-title span {
+  color: var(--action-btn-bg);
+}
+
+.hero-tagline {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  font-weight: 700;
   margin-top: 4px;
 }
 
-.main-title {
-  font-size: 1.6rem;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  color: var(--text-title);
-  opacity: 0.95;
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 24px;
 }
 
-.status-indicators {
+.menu-footer {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   2. ESTILOS DA SELEÇÃO DE GRADE E FASE
+   ========================================================================== */
+
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.view-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-title);
+}
+
+.setup-scroll-area {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  margin-bottom: 12px;
+}
+
+.setup-group {
+  margin-bottom: 18px;
+}
+
+.group-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.group-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.level-badge-indicator {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--action-btn-bg);
+  background: rgba(231, 100, 73, 0.15);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* Seletor Segmentado de Grade (3x3, 4x4, 5x5, 6x6) */
+.segmented-picker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  gap: 4px;
+}
+
+.seg-btn {
+  background: transparent;
+  border: none;
+  color: var(--pill-text);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.seg-btn.active {
+  background: var(--pill-active-bg);
+  color: var(--pill-active-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Dificuldades (Cards 2x2) */
+.diff-tier-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.diff-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.diff-tag {
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: var(--text-title);
+  letter-spacing: 0.5px;
+}
+
+.diff-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.diff-card.active {
+  border-color: var(--action-btn-bg);
+  background: rgba(231, 100, 73, 0.12);
+}
+
+.diff-card.active .diff-tag {
+  color: var(--action-btn-bg);
+}
+
+/* Grade de Fases Determinísticas */
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.level-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-title);
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.level-btn.active {
+  border-color: var(--action-btn-bg);
+  background: rgba(231, 100, 73, 0.2);
+  color: var(--action-btn-bg);
+  box-shadow: 0 0 10px rgba(231, 100, 73, 0.3);
+}
+
+.level-btn.completed::after {
+  content: '★';
+  position: absolute;
+  bottom: 2px;
+  font-size: 0.65rem;
+  color: #fbbf24;
+}
+
+/* Card Resumo */
+.level-summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-top: 4px;
+}
+
+.sum-title {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-title);
+}
+
+.sum-record {
+  display: block;
+  font-size: 0.8rem;
+  color: #fbbf24;
+  margin-top: 2px;
+}
+
+.setup-footer {
+  width: 100%;
+}
+
+/* ==========================================================================
+   3. ESTILOS DO GAMEPLAY
+   ========================================================================== */
+
+.game-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.game-level-pill {
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  color: var(--text-title);
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+}
+
+.game-right-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.game-subhead {
+  text-align: center;
+  margin-top: 2px;
+}
+
+.subhead-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-title);
+}
+
+.hud-stats {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 20px;
+  gap: 24px;
   margin-top: 4px;
 }
 
-.indicator-item {
+.hud-stat-item {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -275,19 +605,11 @@ html, body {
   color: var(--text-muted);
 }
 
-.indicator-item .icon {
-  font-size: 1.15rem;
-}
-
-.indicator-item .val {
+.hud-stat-item .val {
   color: var(--text-title);
   font-variant-numeric: tabular-nums;
-  font-size: 1.12rem;
+  font-size: 1.15rem;
 }
-
-/* ==========================================================================
-   TABULEIRO CENTRAL 1:1
-   ========================================================================== */
 
 .board-area {
   display: flex;
@@ -295,13 +617,13 @@ html, body {
   justify-content: center;
   flex: 1;
   width: 100%;
-  margin: 12px 0;
+  margin: 10px 0;
 }
 
 .board-container {
   position: relative;
-  width: min(88vw, 56vh, 460px);
-  height: min(88vw, 56vh, 460px);
+  width: min(88vw, 55vh, 460px);
+  height: min(88vw, 55vh, 460px);
   aspect-ratio: 1 / 1;
   background: var(--board-bg);
   border: 2px solid var(--board-border);
@@ -309,12 +631,8 @@ html, body {
   box-shadow: var(--board-shadow);
   padding: 8px;
   overflow: hidden;
-  touch-action: none; /* Previne scroll acidental durante o arrasto no iPad */
+  touch-action: none;
 }
-
-/* ==========================================================================
-   PEÇAS (TILES) E ANIMAÇÃO
-   ========================================================================== */
 
 .tile-wrapper {
   position: absolute;
@@ -335,7 +653,7 @@ html, body {
   border-radius: var(--tile-radius);
   box-shadow: var(--tile-shadow);
   color: var(--tile-text);
-  font-size: clamp(1.3rem, 6vw, 2.3rem);
+  font-size: clamp(1.2rem, 5vw, 2.2rem);
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -344,41 +662,19 @@ html, body {
   transition: transform 0.08s ease, box-shadow 0.08s ease;
 }
 
-/* Estado de Arrastando */
 .tile-wrapper.dragging .tile-inner {
   transform: translateY(2px) scale(0.98);
   box-shadow: var(--tile-shadow-active);
   filter: brightness(0.98);
 }
 
-/* Botão de Ação Inferior estilo Print */
-.bottom-action {
+.game-bottom-action {
   width: 100%;
   max-width: 440px;
 }
 
-.pill-action-btn {
-  width: 100%;
-  background: var(--action-btn-bg);
-  color: var(--action-btn-text);
-  border: none;
-  font-size: 1.25rem;
-  font-weight: 800;
-  padding: 16px 24px;
-  border-radius: 36px;
-  box-shadow: var(--action-btn-shadow);
-  cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-  letter-spacing: 0.5px;
-}
-
-.pill-action-btn:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 var(--action-btn-bevel);
-}
-
 /* ==========================================================================
-   MODAIS (VITÓRIA E SELETOR DE TEMAS)
+   MODAIS (PAUSA, VITÓRIA, RECORDES E TEMAS)
    ========================================================================== */
 
 .modal-overlay {
@@ -421,30 +717,42 @@ html, body {
   100% { transform: scale(1); opacity: 1; }
 }
 
+.modal-icon-badge {
+  font-size: 2.8rem;
+  margin-bottom: 6px;
+}
+
 .trophy-icon {
   font-size: 3.2rem;
   margin-bottom: 6px;
 }
 
 .modal-title {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   font-weight: 900;
   color: var(--text-title);
   letter-spacing: 0.5px;
 }
 
 .modal-subtitle {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   margin-top: 4px;
   margin-bottom: 18px;
+}
+
+.modal-btn-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 }
 
 .modal-stats {
   display: flex;
   gap: 12px;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .modal-stat-box {
@@ -452,7 +760,8 @@ html, body {
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--board-border);
   border-radius: var(--radius-sm);
-  padding: 12px 8px;
+  padding: 10px 8px;
+  position: relative;
 }
 
 .m-label {
@@ -471,6 +780,14 @@ html, body {
   margin-top: 2px;
 }
 
+.record-flag {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #10b981;
+  margin-top: 2px;
+}
+
 .record-badge {
   background: rgba(245, 158, 11, 0.14);
   color: #fbbf24;
@@ -479,17 +796,85 @@ html, body {
   border-radius: 8px;
   font-size: 0.78rem;
   font-weight: 700;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   width: 100%;
 }
 
-/* Seletor de Temas Grid */
+/* Quadro de Recordes */
+.records-card {
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.records-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  padding: 4px;
+  border-radius: 12px;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.rec-filter {
+  background: transparent;
+  border: none;
+  color: var(--pill-text);
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.rec-filter.active {
+  background: var(--pill-active-bg);
+  color: var(--pill-active-text);
+}
+
+.records-list {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.record-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--board-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+}
+
+.record-item-name {
+  font-weight: 800;
+  color: var(--text-title);
+}
+
+.record-item-stats {
+  color: #fbbf24;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+}
+
+/* Temas */
 .theme-options-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .theme-opt-btn {
@@ -522,18 +907,6 @@ html, body {
 .theme-swatch.slate { background: #1e293b; border: 2px solid #334155; }
 .theme-swatch.wood { background: #deb887; border: 2px solid #966735; }
 .theme-swatch.neon { background: #090a14; border: 2px solid #00e5ff; }
-
-.pill-action-btn.close-btn {
-  background: #334155;
-  box-shadow: 0 4px 0 #1e293b;
-  font-size: 1rem;
-  padding: 12px 20px;
-}
-
-.pill-action-btn.close-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #1e293b;
-}
 
 .hidden {
   display: none !important;

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>GridShift — Tactile Number Puzzle</title>
   
-  <meta name="description" content="Sliding Tile Puzzle tátil com arrasto multicasas e suporte a temas.">
+  <meta name="description" content="Sliding Tile Puzzle tátil com fases determinísticas, arrasto multicasas e recordes.">
   <meta name="theme-color" content="#182029">
 
   <!-- PWA & iOS Safari meta tags -->
@@ -19,72 +19,299 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-container">
-    <!-- Barra Superior de Navegação -->
-    <header class="top-nav">
-      <button type="button" id="themeBtn" class="circle-btn" title="Alternar Tema Visual" aria-label="Tema">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/>
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-      </button>
+  <div class="app-viewport">
 
-      <!-- Badge Seletora de Dificuldade -->
-      <div class="difficulty-picker" id="difficultyPicker">
-        <button type="button" class="diff-btn" data-size="3">3X3</button>
-        <button type="button" class="diff-btn" data-size="4">4X4</button>
-        <button type="button" class="diff-btn active" data-size="5">5X5</button>
+    <!-- ====================================================================
+         1. TELA: MENU PRINCIPAL
+         ==================================================================== -->
+    <section id="screenMenu" class="screen-view active">
+      <div class="menu-header">
+        <button type="button" id="menuThemeBtn" class="circle-btn" title="Temas" aria-label="Temas">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button type="button" id="menuAudioBtn" class="circle-btn audio-btn" title="Alternar Som" aria-label="Som">
+          <svg class="sound-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <svg class="sound-off hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        </button>
       </div>
 
-      <button type="button" id="audioToggleBtn" class="circle-btn" title="Alternar Som" aria-label="Som">
-        <svg id="soundIconOn" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-        </svg>
-        <svg id="soundIconOff" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-          <line x1="23" y1="9" x2="17" y2="15"/>
-          <line x1="17" y1="9" x2="23" y2="15"/>
-        </svg>
-      </button>
-    </header>
-
-    <!-- Subcabeçalho: Título e HUD -->
-    <div class="header-status">
-      <h1 class="main-title" id="statusTitle">GridShift</h1>
-      <div class="status-indicators">
-        <div class="indicator-item" title="Tempo Decorrido">
-          <span class="icon" aria-hidden="true">⏱</span>
-          <span id="timerText" class="val">00:00</span>
+      <div class="menu-hero">
+        <div class="hero-tile-badge">
+          <span class="hero-num">1</span><span class="hero-num">2</span><span class="hero-num">3</span>
         </div>
-        <div class="indicator-item" title="Contador de Movimentos">
-          <span class="icon" aria-hidden="true">👣</span>
-          <span id="movesText" class="val">0</span>
+        <h1 class="hero-title">GRID<span>SHIFT</span></h1>
+        <p class="hero-tagline">Tactile Number Puzzle</p>
+      </div>
+
+      <div class="menu-actions">
+        <button type="button" id="btnContinueGame" class="pill-action-btn pulse hidden">
+          Continuar Partida
+        </button>
+        <button type="button" id="btnPlayMenu" class="pill-action-btn">
+          Jogar
+        </button>
+        <button type="button" id="btnSelectLevel" class="menu-secondary-btn">
+          <span>🎯</span> Selecionar Fase
+        </button>
+        <button type="button" id="btnOpenRecords" class="menu-secondary-btn">
+          <span>🏆</span> Recordes & Conquistas
+        </button>
+      </div>
+
+      <div class="menu-footer">
+        <span>v2.0 • Fases Determinísticas & Arrasto Multicasas</span>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         2. TELA: SELEÇÃO DE GRADE E FASE
+         ==================================================================== -->
+    <section id="screenSelect" class="screen-view">
+      <header class="view-header">
+        <button type="button" id="btnBackToMenu" class="circle-btn" title="Voltar ao Menu" aria-label="Voltar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <h2 class="view-title">Configurar Partida</h2>
+        <div style="width: 44px;"></div>
+      </header>
+
+      <div class="setup-scroll-area">
+        <!-- 1. Tamanho da Grade -->
+        <div class="setup-group">
+          <span class="group-label">TAMANHO DO TABULEIRO</span>
+          <div class="segmented-picker" id="gridSizePicker">
+            <button type="button" class="seg-btn" data-size="3">3×3</button>
+            <button type="button" class="seg-btn" data-size="4">4×4</button>
+            <button type="button" class="seg-btn active" data-size="5">5×5</button>
+            <button type="button" class="seg-btn" data-size="6">6×6</button>
+          </div>
+        </div>
+
+        <!-- 2. Nível de Dificuldade -->
+        <div class="setup-group">
+          <span class="group-label">DIFICULDADE</span>
+          <div class="diff-tier-grid" id="diffTierPicker">
+            <button type="button" class="diff-card active" data-diff="easy">
+              <span class="diff-tag">FÁCIL</span>
+              <span class="diff-desc">Poucos passos</span>
+            </button>
+            <button type="button" class="diff-card" data-diff="medium">
+              <span class="diff-tag">MÉDIO</span>
+              <span class="diff-desc">Equilibrado</span>
+            </button>
+            <button type="button" class="diff-card" data-diff="hard">
+              <span class="diff-tag">DIFÍCIL</span>
+              <span class="diff-desc">Embaralhado</span>
+            </button>
+            <button type="button" class="diff-card" data-diff="expert">
+              <span class="diff-tag">EXPERT</span>
+              <span class="diff-desc">Desafio total</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Catálogo de Fases Determinísticas -->
+        <div class="setup-group">
+          <div class="group-header-row">
+            <span class="group-label">ESCOLHA A FASE (DETERMINÍSTICA)</span>
+            <span id="selectedLevelLabel" class="level-badge-indicator">Fase 1</span>
+          </div>
+          <div class="level-grid" id="levelGridContainer">
+            <!-- Injetado dinamicamente via JS (Fases 1 a 10) -->
+          </div>
+        </div>
+
+        <!-- 4. Resumo da Fase Selecionada -->
+        <div class="level-summary-card">
+          <div class="summary-info">
+            <span class="sum-title" id="sumLevelTitle">5×5 • Fácil (Fase 1)</span>
+            <span class="sum-record" id="sumLevelRecord">Melhor: --:-- / -- passos</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Tabuleiro Central 1:1 -->
-    <main class="board-area">
-      <div id="boardContainer" class="board-container" role="grid" aria-label="Tabuleiro de Blocos">
-        <!-- Injetado dinamicamente via app.js -->
+      <footer class="setup-footer">
+        <button type="button" id="btnStartGame" class="pill-action-btn">
+          Começar Fase
+        </button>
+      </footer>
+    </section>
+
+    <!-- ====================================================================
+         3. TELA: GAMEPLAY
+         ==================================================================== -->
+    <section id="screenGame" class="screen-view">
+      <header class="game-top-bar">
+        <button type="button" id="btnGameBack" class="circle-btn" title="Voltar à Seleção" aria-label="Voltar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+
+        <div class="game-level-pill" id="gameLevelPill">
+          5×5 • Fase 1
+        </div>
+
+        <div class="game-right-btns">
+          <button type="button" id="btnGameAudio" class="circle-btn audio-btn" title="Alternar Som" aria-label="Som">
+            <svg class="sound-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <svg class="sound-off hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          </button>
+          <button type="button" id="btnPauseGame" class="circle-btn" title="Pausar Jogo" aria-label="Pausar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="10" y1="5" x2="10" y2="19"/>
+              <line x1="14" y1="5" x2="14" y2="19"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="game-subhead">
+        <h2 class="subhead-title" id="gameSubheadTitle">Imagem objetiva</h2>
+        <div class="hud-stats">
+          <div class="hud-stat-item" title="Tempo">
+            <span class="icon" aria-hidden="true">⏱</span>
+            <span id="gameTimerText" class="val">00:00</span>
+          </div>
+          <div class="hud-stat-item" title="Movimentos">
+            <span class="icon" aria-hidden="true">👣</span>
+            <span id="gameMovesText" class="val">0</span>
+          </div>
+        </div>
       </div>
-    </main>
 
-    <!-- Botão de Ação Inferior estilo Print -->
-    <footer class="bottom-action">
-      <button type="button" id="restartBtn" class="pill-action-btn">
-        Reiniciar
-      </button>
-    </footer>
+      <!-- Tabuleiro 1:1 Quadrado Touch -->
+      <main class="board-area">
+        <div id="boardContainer" class="board-container" role="grid" aria-label="Tabuleiro GridShift">
+          <!-- Peças injetadas dinamicamente via JS -->
+        </div>
+      </main>
+
+      <footer class="game-bottom-action">
+        <button type="button" id="btnRestartLevel" class="pill-action-btn">
+          Reiniciar Fase
+        </button>
+      </footer>
+    </section>
+
   </div>
 
-  <!-- Menu / Modal Seletor de Temas -->
-  <div id="themeModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="themeModalTitle">
-    <div class="modal-card theme-picker-card">
-      <h2 id="themeModalTitle" class="modal-title">Escolher Tema</h2>
-      <p class="modal-subtitle">Alterne a estética do tabuleiro e das peças</p>
+  <!-- ====================================================================
+       MODAL 1: PAUSA
+       ==================================================================== -->
+  <div id="pauseModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+    <div class="modal-card">
+      <div class="modal-icon-badge">⏸</div>
+      <h2 id="pauseTitle" class="modal-title">Jogo Pausado</h2>
+      <p class="modal-subtitle">O cronômetro e o tabuleiro estão congelados</p>
+
+      <div class="modal-btn-stack">
+        <button type="button" id="btnResumeGame" class="pill-action-btn">
+          Continuar
+        </button>
+        <button type="button" id="btnPauseRestart" class="modal-secondary-btn">
+          Reiniciar Fase
+        </button>
+        <button type="button" id="btnPauseExit" class="modal-secondary-btn">
+          Sair para o Menu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: VITÓRIA COM RECORDES
+       ==================================================================== -->
+  <div id="victoryModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="victoryTitle">
+    <div class="modal-card">
+      <div class="trophy-icon" aria-hidden="true">🏆</div>
+      <h2 id="victoryTitle" class="modal-title">FASE CONCLUÍDA!</h2>
+      <p class="modal-subtitle" id="victorySubtitle">Quebra-cabeça resolvido com sucesso.</p>
+
+      <div class="modal-stats">
+        <div class="modal-stat-box">
+          <span class="m-label">TEMPO</span>
+          <span id="finalTimeText" class="m-value">00:00</span>
+          <span id="badgeTimeRecord" class="record-flag hidden">NOVO RECORDE!</span>
+        </div>
+        <div class="modal-stat-box">
+          <span class="m-label">MOVIMENTOS</span>
+          <span id="finalMovesText" class="m-value">0</span>
+          <span id="badgeMovesRecord" class="record-flag hidden">MELHOR EFICIÊNCIA!</span>
+        </div>
+      </div>
+
+      <div id="bestRecordBadge" class="record-badge">
+        Recorde da Fase: 00:00 / 0 mov.
+      </div>
+
+      <div class="modal-btn-stack">
+        <button type="button" id="btnNextLevel" class="pill-action-btn">
+          Próxima Fase
+        </button>
+        <button type="button" id="btnPlayAgain" class="modal-secondary-btn">
+          Jogar Novamente
+        </button>
+        <button type="button" id="btnVictoryMenu" class="modal-secondary-btn">
+          Voltar ao Menu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: QUADRO DE RECORDES
+       ==================================================================== -->
+  <div id="recordsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="recordsTitle">
+    <div class="modal-card records-card">
+      <h2 id="recordsTitle" class="modal-title">Quadro de Recordes</h2>
+      <p class="modal-subtitle">Seus melhores tempos e eficiências por fase</p>
+
+      <div class="records-filter-bar">
+        <button type="button" class="rec-filter active" data-rec-size="3">3×3</button>
+        <button type="button" class="rec-filter" data-rec-size="4">4×4</button>
+        <button type="button" class="rec-filter" data-rec-size="5">5×5</button>
+        <button type="button" class="rec-filter" data-rec-size="6">6×6</button>
+      </div>
+
+      <div class="records-list" id="recordsListContainer">
+        <!-- Injetado dinamicamente -->
+      </div>
+
+      <button type="button" id="btnCloseRecords" class="modal-secondary-btn" style="width: 100%; margin-top: 12px;">
+        Fechar
+      </button>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 4: TEMAS
+       ==================================================================== -->
+  <div id="themeModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="themeTitle">
+    <div class="modal-card">
+      <h2 id="themeTitle" class="modal-title">Tema Visual</h2>
+      <p class="modal-subtitle">Selecione o estilo gráfico do jogo</p>
 
       <div class="theme-options-grid">
         <button type="button" class="theme-opt-btn active" data-set-theme="tactile-ivory">
@@ -105,36 +332,8 @@
         </button>
       </div>
 
-      <button type="button" id="closeThemeModalBtn" class="pill-action-btn close-btn">
+      <button type="button" id="btnCloseTheme" class="modal-secondary-btn" style="width: 100%; margin-top: 12px;">
         Fechar
-      </button>
-    </div>
-  </div>
-
-  <!-- Modal de Vitória -->
-  <div id="victoryModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="victoryTitle">
-    <div class="modal-card">
-      <div class="trophy-icon" aria-hidden="true">🏆</div>
-      <h2 id="victoryTitle" class="modal-title">VITÓRIA!</h2>
-      <p class="modal-subtitle">Quebra-cabeça resolvido com sucesso.</p>
-
-      <div class="modal-stats">
-        <div class="modal-stat-box">
-          <span class="m-label">TEMPO</span>
-          <span id="finalTimeText" class="m-value">00:00</span>
-        </div>
-        <div class="modal-stat-box">
-          <span class="m-label">MOVIMENTOS</span>
-          <span id="finalMovesText" class="m-value">0</span>
-        </div>
-      </div>
-
-      <div id="bestRecordBadge" class="record-badge">
-        Recorde: 00:00 / 0 mov.
-      </div>
-
-      <button type="button" id="playAgainBtn" class="pill-action-btn">
-        JOGAR NOVAMENTE
       </button>
     </div>
   </div>
