@@ -10,7 +10,7 @@
   <meta http-equiv="Expires" content="0">
 
   <meta name="description" content="Sliding Tile Puzzle tátil com fases determinísticas, arrasto multicasas e recordes.">
-  <meta name="theme-color" content="#182029">
+  <meta name="theme-color" content="#1c232b">
 
   <!-- Limpeza Imediata de Cache e Service Worker Antigo -->
   <script>
@@ -28,6 +28,11 @@
     }
   </script>
 
+  <!-- Google Fonts: Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
   <!-- PWA & iOS Safari meta tags -->
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="apple-touch-icon" href="icon.svg">
@@ -35,7 +40,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GridShift">
 
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=3.1">
 </head>
 <body>
   <div class="app-viewport">
@@ -89,7 +94,7 @@
       </div>
 
       <div class="menu-footer">
-        <span>v2.2 • Menu Inicial & Fases Determinísticas</span>
+        <span>v3.0 • Design Tátil Refinado & Fases Determinísticas</span>
       </div>
     </section>
 
@@ -170,7 +175,7 @@
     </section>
 
     <!-- ====================================================================
-         3. TELA: GAMEPLAY
+         3. TELA: GAMEPLAY (Fiel ao print)
          ==================================================================== -->
     <section id="screenGame" class="screen-view">
       <header class="game-top-bar">
@@ -180,8 +185,9 @@
           </svg>
         </button>
 
+        <!-- Badge Central estilo Print (ex: 5X5) -->
         <div class="game-level-pill" id="gameLevelPill">
-          5×5 • Fase 1
+          5X5
         </div>
 
         <div class="game-right-btns">
@@ -206,6 +212,7 @@
         </div>
       </header>
 
+      <!-- Subcabeçalho estilo Print ("Imagem objetiva" + ⏱ 01:42 + 👣 12) -->
       <div class="game-subhead">
         <h2 class="subhead-title" id="gameSubheadTitle">Imagem objetiva</h2>
         <div class="hud-stats">
@@ -220,19 +227,17 @@
         </div>
       </div>
 
-      <!-- Tabuleiro 1:1 Quadrado Touch -->
+      <!-- Tabuleiro 1:1 Quadrado Touch com Estojo Escuro e Padding Rigoroso -->
       <main class="board-area">
         <div id="boardContainer" class="board-container" role="grid" aria-label="Tabuleiro GridShift">
           <!-- Peças injetadas dinamicamente via JS -->
         </div>
       </main>
 
+      <!-- Botão Inferior Pílula Total ("Começar" / "Reiniciar") -->
       <footer class="game-bottom-action">
-        <button type="button" id="btnRestartLevel" class="pill-action-btn secondary-action">
-          Reiniciar Fase
-        </button>
-        <button type="button" id="btnPauseGameBottom" class="pill-action-btn pause-action">
-          <span>⏸</span> Pausar
+        <button type="button" id="btnRestartLevel" class="pill-action-btn print-bottom-btn">
+          Começar
         </button>
       </footer>
     </section>
@@ -360,6 +365,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=2.2"></script>
+  <script src="app.js?v=3.1"></script>
 </body>
 </html>

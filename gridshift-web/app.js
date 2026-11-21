@@ -326,7 +326,7 @@
     switchScreen('game');
 
     const diffObj = DIFFICULTIES.find(d => d.id === currentGame.diff) || DIFFICULTIES[0];
-    gameLevelPill.textContent = `${currentGame.size}×${currentGame.size} • Fase ${currentGame.level} (${diffObj.label})`;
+    gameLevelPill.textContent = `${currentGame.size}X${currentGame.size}`;
     gameSubheadTitle.textContent = 'Imagem objetiva';
 
     gameMovesText.textContent = String(currentGame.moves);
@@ -340,6 +340,7 @@
   function buildGameBoard() {
     const size = currentGame.size;
     document.documentElement.style.setProperty('--grid-size', size);
+    boardContainer.setAttribute('data-grid-size', size);
     boardContainer.innerHTML = '';
     tiles = [];
     boardMatrix = Array.from({ length: size }, () => Array(size).fill(null));
@@ -422,7 +423,9 @@
       if (!isSameRow && !isSameCol) return;
 
       const rect = boardContainer.getBoundingClientRect();
-      const cellSize = rect.width / currentGame.size;
+      const boardPadding = 14;
+      const usableWidth = rect.width - (boardPadding * 2);
+      const cellSize = usableWidth / currentGame.size;
 
       const affectedTiles = [];
       let axis = 'x';

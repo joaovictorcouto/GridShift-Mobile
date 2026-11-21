@@ -11,33 +11,35 @@
 
 /* 1. TEMA PADRÃO: MARFIM TÁTIL (Fiel ao print) */
 :root, [data-theme="tactile-ivory"] {
-  --bg-canvas: #1c242e;
-  --bg-gradient: radial-gradient(circle at 50% 25%, #24303d 0%, #171e27 85%);
-  --header-btn-bg: #273441;
-  --header-btn-border: #364657;
-  --header-btn-color: #d1dbe5;
-  --pill-bg: #222d38;
-  --pill-border: #324252;
-  --pill-text: #94a3b8;
-  --pill-active-bg: #151d25;
+  --bg-canvas: #161b22;
+  --bg-gradient: radial-gradient(circle at 50% 20%, #222b37 0%, #161b22 80%);
+  --header-btn-bg: #26313d;
+  --header-btn-border: rgba(255, 255, 255, 0.08);
+  --header-btn-color: #cbd5e1;
+  --pill-bg: #26313d;
+  --pill-border: rgba(255, 255, 255, 0.08);
+  --pill-text: #cbd5e1;
+  --pill-active-bg: #1c242e;
   --pill-active-text: #ffffff;
   
-  --board-bg: #151c24;
-  --board-border: #232d39;
-  --board-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(0, 0, 0, 0.8);
+  --board-bg: #1c232b;
+  --board-border: rgba(255, 255, 255, 0.05);
+  --board-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.6);
   
-  /* Peças: Visual Marfim com relevo tridimensional 3D */
-  --tile-bg: #ebe3d5;
-  --tile-bg-gradient: linear-gradient(180deg, #f3ede2 0%, #ebe2d3 100%);
-  --tile-border: #ded4c3;
-  --tile-bevel: #bfae98;
-  --tile-shadow: 0 5px 0 var(--tile-bevel), 0 8px 12px rgba(0, 0, 0, 0.45);
-  --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 3px 6px rgba(0, 0, 0, 0.35);
-  --tile-text: #19202a;
+  /* Peças: Visual Marfim / Resina fosca com relevo 3D chanfrado sólido */
+  --tile-bg: #efe8dc;
+  --tile-bg-gradient: #efe8dc;
+  --tile-border: transparent;
+  --tile-bevel: #d4c9b8;
+  --tile-shadow: 0 4px 0 var(--tile-bevel), 0 6px 12px rgba(0, 0, 0, 0.15);
+  --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 3px 6px rgba(0, 0, 0, 0.12);
+  --tile-text: #2a2e35;
+  --tile-radius: 12px;
 
-  --action-btn-bg: #e76449;
-  --action-btn-bevel: #b5422b;
-  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 16px rgba(231, 100, 73, 0.4);
+  /* Botão de Ação Inferior Coral / Terracota */
+  --action-btn-bg: #ee6b55;
+  --action-btn-bevel: #be4632;
+  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 18px rgba(238, 107, 85, 0.35);
   --action-btn-text: #ffffff;
 
   --card-bg: #222d38;
@@ -176,7 +178,7 @@ html, body {
   background-color: var(--bg-canvas);
   background-image: var(--bg-gradient);
   color: var(--text-title);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
@@ -559,18 +561,21 @@ html, body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: min(88vw, 55vh, 460px);
+  margin: 0 auto;
 }
 
 .game-level-pill {
   background: var(--pill-bg);
   border: 1px solid var(--pill-border);
-  color: var(--text-title);
-  padding: 8px 18px;
-  border-radius: 24px;
-  font-size: 0.85rem;
-  font-weight: 800;
+  color: var(--pill-text);
+  padding: 6px 18px;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 700;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .game-right-btns {
@@ -580,19 +585,21 @@ html, body {
 
 .game-subhead {
   text-align: center;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .subhead-title {
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 400;
-  color: var(--text-title);
+  color: #e2e8f0;
+  letter-spacing: -0.2px;
 }
 
 .hud-stats {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  align-items: center;
+  gap: 20px;
   margin-top: 4px;
 }
 
@@ -601,14 +608,15 @@ html, body {
   align-items: center;
   gap: 6px;
   font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: #94a3b8;
 }
 
 .hud-stat-item .val {
-  color: var(--text-title);
+  color: #f1f5f9;
   font-variant-numeric: tabular-nums;
   font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .board-area {
@@ -627,19 +635,19 @@ html, body {
   aspect-ratio: 1 / 1;
   background: var(--board-bg);
   border: 2px solid var(--board-border);
-  border-radius: var(--radius-lg);
+  border-radius: 28px;
   box-shadow: var(--board-shadow);
-  padding: 8px;
+  padding: 14px;
   overflow: hidden;
   touch-action: none;
 }
 
 .tile-wrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% / var(--grid-size));
-  height: calc(100% / var(--grid-size));
+  top: 14px;
+  left: 14px;
+  width: calc((100% - 28px) / var(--grid-size));
+  height: calc((100% - 28px) / var(--grid-size));
   padding: 4px;
   touch-action: none;
   will-change: transform;
@@ -648,31 +656,74 @@ html, body {
 .tile-inner {
   width: 100%;
   height: 100%;
-  background: var(--tile-bg-gradient);
+  background: var(--tile-bg);
   border: 1px solid var(--tile-border);
-  border-radius: var(--tile-radius);
+  border-radius: var(--tile-radius, 12px);
   box-shadow: var(--tile-shadow);
   color: var(--tile-text);
-  font-size: clamp(1.2rem, 5vw, 2.2rem);
-  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(1.2rem, 5vw, 2.1rem);
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform 0.08s ease, box-shadow 0.08s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+[data-grid-size="3"] .tile-inner {
+  border-radius: 16px;
+  font-size: clamp(1.8rem, 8vw, 3rem);
+}
+
+[data-grid-size="4"] .tile-inner {
+  border-radius: 14px;
+  font-size: clamp(1.4rem, 6.5vw, 2.4rem);
+}
+
+[data-grid-size="5"] .tile-inner {
+  border-radius: 12px;
+  font-size: clamp(1.2rem, 5vw, 2.0rem);
+}
+
+[data-grid-size="6"] .tile-inner {
+  border-radius: 9px;
+  font-size: clamp(1rem, 4vw, 1.6rem);
 }
 
 .tile-wrapper.dragging .tile-inner {
-  transform: translateY(2px) scale(0.98);
+  transform: translateY(2px);
   box-shadow: var(--tile-shadow-active);
-  filter: brightness(0.98);
 }
 
 .game-bottom-action {
   width: 100%;
-  max-width: 460px;
+  max-width: min(88vw, 55vh, 460px);
   display: flex;
-  gap: 12px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.pill-action-btn.print-bottom-btn {
+  width: 100%;
+  border-radius: 9999px;
+  background: var(--action-btn-bg);
+  color: var(--action-btn-text);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 16px 0;
+  box-shadow: var(--action-btn-shadow);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.pill-action-btn.print-bottom-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--action-btn-bevel);
 }
 
 .pill-action-btn.secondary-action {
