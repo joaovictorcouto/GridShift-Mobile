@@ -336,16 +336,77 @@
     isPreStart = preStart;
     if (preStart) {
       stopTimer();
-      if (boardBlurOverlay) boardBlurOverlay.classList.remove('hidden');
       boardContainer.classList.add('is-pre-start');
-      btnRestartLevel.classList.remove('hidden');
-      btnRestartLevel.textContent = 'Começar';
+      if (btnRestartLevel) {
+        btnRestartLevel.classList.remove('hidden');
+        btnRestartLevel.textContent = 'Começar';
+      }
       if (gameBottomAction) gameBottomAction.classList.remove('hidden');
+      if (btnPauseGame) btnPauseGame.classList.add('hidden');
+      if (gameSubheadTitle) gameSubheadTitle.textContent = 'Imagem objetiva';
+      buildObjectiveBoard();
     } else {
-      if (boardBlurOverlay) boardBlurOverlay.classList.add('hidden');
       boardContainer.classList.remove('is-pre-start');
-      btnRestartLevel.classList.add('hidden');
+      if (btnRestartLevel) btnRestartLevel.classList.add('hidden');
       if (gameBottomAction) gameBottomAction.classList.add('hidden');
+      if (btnPauseGame) btnPauseGame.classList.remove('hidden');
+      
+      const diffObj = DIFFICULTIES.find(d => d.id === currentGame.diff) || DIFFICULTIES[0];
+      if (gameSubheadTitle) {
+        gameSubheadTitle.textContent = `Fase ${currentGame.level} • ${diffObj.label}`;
+      }
+      buildGameBoard();
+      startTimer();
+    }
+  }
+
+  function buildObjectiveBoard() {
+    const size = currentGame.size;
+    document.documentElement.style.setProperty('--grid-size', size);
+    boardContainer.setAttribute('data-grid-size', size);
+    boardContainer.innerHTML = '';
+    tiles = [];
+    boardMatrix = Array.from({ length: size }, () => Array(size).fill(null));
+
+    let val = 1;
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        if (r === size - 1 && c === size - 1) {
+          boardMatrix[r][c] = null;
+        } else {
+          const tileVal = val++;
+          const tileEl = document.createElement('div');
+          tileEl.className = 'tile-wrapper';
+          tileEl.setAttribute('role', 'button');
+          tileEl.setAttribute('aria-label', `Peça ${tileVal}`);
+
+          const innerEl = document.createElement('div');
+          innerEl.className = 'tile-inner';
+          innerEl.textContent = tileVal;
+          tileEl.appendChild(innerEl);
+
+          const tileObj = {
+            value: tileVal,
+            row: r,
+            col: c,
+            el: tileEl
+          };
+
+          tileEl.addEventListener('click', () => {
+            if (isPreStart) {
+              initAudioContext();
+              triggerHaptic(25);
+              setPreStartState(false);
+            }
+          });
+
+          boardContainer.appendChild(tileEl);
+          tiles.push(tileObj);
+          boardMatrix[r][c] = tileObj;
+
+          renderTileTransform(tileObj, false);
+        }
+      }
     }
   }
 
