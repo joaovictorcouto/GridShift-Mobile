@@ -101,7 +101,7 @@
   let boardMatrix = []; // [row][col]
 
   let audioEnabled = localStorage.getItem('gridshift_audio') !== 'false';
-  let currentTheme = localStorage.getItem('gridshift_theme') || 'tactile-ivory';
+  let currentTheme = localStorage.getItem('gridshift_selected_theme') || localStorage.getItem('gridshift_theme') || 'tactile-ivory';
 
   // ==========================================================================
   // NAVEGAÇÃO DE TELAS
@@ -970,6 +970,7 @@
   function applyTheme(themeName) {
     currentTheme = themeName;
     document.documentElement.setAttribute('data-theme', themeName);
+    localStorage.setItem('gridshift_selected_theme', themeName);
     localStorage.setItem('gridshift_theme', themeName);
 
     themeOptionButtons.forEach(btn => {

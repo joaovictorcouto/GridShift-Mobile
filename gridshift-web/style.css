@@ -11,6 +11,8 @@
 
 /* 1. TEMA PADRÃO: MARFIM TÁTIL (Fiel ao print) */
 :root, [data-theme="tactile-ivory"] {
+  --theme-font: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --tile-font: 'Nunito', sans-serif;
   --bg-canvas: #161b22;
   --bg-gradient: radial-gradient(circle at 50% 20%, #222b37 0%, #161b22 80%);
   --header-btn-bg: #26313d;
@@ -25,6 +27,7 @@
   --board-bg: #1c232b;
   --board-border: rgba(255, 255, 255, 0.05);
   --board-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  --board-radius: 28px;
   
   /* Peças: Visual Marfim / Resina fosca com relevo 3D chanfrado sólido */
   --tile-bg: #efe8dc;
@@ -35,22 +38,233 @@
   --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 3px 6px rgba(0, 0, 0, 0.12);
   --tile-text: #2a2e35;
   --tile-radius: 12px;
+  --tile-text-shadow: none;
 
   /* Botão de Ação Inferior Coral / Terracota */
   --action-btn-bg: #ee6b55;
   --action-btn-bevel: #be4632;
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 18px rgba(238, 107, 85, 0.35);
   --action-btn-text: #ffffff;
+  --accent-highlight: rgba(238, 107, 85, 0.16);
 
   --card-bg: #222d38;
   --card-border: #324252;
   --text-title: #f1f5f9;
   --text-muted: #94a3b8;
   --modal-bg: #1c2530;
+  --modal-border: #324252;
+  --stat-box-bg: rgba(0, 0, 0, 0.25);
+  --blur-overlay-bg: rgba(20, 26, 35, 0.72);
+  --star-color: #fbbf24;
+  --star-border: rgba(245, 158, 11, 0.5);
+  --star-bg: rgba(245, 158, 11, 0.1);
 }
 
-/* 2. TEMA SLATE DARK */
+/* 2. TEMA: CIRCUITO NEON */
+[data-theme="neon-circuit"] {
+  --theme-font: 'Rajdhani', 'Nunito', sans-serif;
+  --tile-font: 'Rajdhani', sans-serif;
+  --bg-canvas: #070b18;
+  --bg-gradient: 
+    radial-gradient(circle at 50% 20%, #0e1933 0%, #070b18 85%),
+    linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+  --header-btn-bg: #0c162c;
+  --header-btn-border: rgba(0, 229, 255, 0.35);
+  --header-btn-color: #00e5ff;
+  --pill-bg: #0c162c;
+  --pill-border: rgba(0, 229, 255, 0.35);
+  --pill-text: #00e5ff;
+  --pill-active-bg: #00e5ff;
+  --pill-active-text: #070b18;
+  
+  --board-bg: #091124;
+  --board-border: #00e5ff;
+  --board-shadow: 0 0 28px rgba(0, 229, 255, 0.28), 0 16px 36px rgba(0, 0, 0, 0.9), inset 0 0 16px rgba(0, 229, 255, 0.12);
+  --board-radius: 28px;
+  
+  --tile-bg: #0d1b2a;
+  --tile-bg-gradient: linear-gradient(180deg, #132238 0%, #0a1522 100%);
+  --tile-border: rgba(0, 229, 255, 0.5);
+  --tile-bevel: #040810;
+  --tile-shadow: 0 4px 0 var(--tile-bevel), 0 0 12px rgba(0, 229, 255, 0.22);
+  --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 0 6px rgba(0, 229, 255, 0.3);
+  --tile-text: #00e5ff;
+  --tile-radius: 12px;
+  --tile-text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+
+  --action-btn-bg: #ffb300;
+  --action-btn-bevel: #c78000;
+  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 0 20px rgba(255, 179, 0, 0.45);
+  --action-btn-text: #070b18;
+  --accent-highlight: rgba(0, 229, 255, 0.15);
+
+  --card-bg: #0b1528;
+  --card-border: rgba(0, 229, 255, 0.3);
+  --text-title: #ffffff;
+  --text-muted: #64b5f6;
+  --modal-bg: #091224;
+  --modal-border: rgba(0, 229, 255, 0.45);
+  --stat-box-bg: rgba(0, 0, 0, 0.4);
+  --blur-overlay-bg: rgba(7, 11, 24, 0.85);
+  --star-color: #ffb300;
+  --star-border: rgba(255, 179, 0, 0.6);
+  --star-bg: rgba(255, 179, 0, 0.15);
+}
+
+/* 3. TEMA: VIDRO AURORA */
+[data-theme="aurora-glass"] {
+  --theme-font: 'Nunito', sans-serif;
+  --tile-font: 'Nunito', sans-serif;
+  --bg-canvas: #1f0b38;
+  --bg-gradient: linear-gradient(145deg, #1a0832 0%, #3d1054 35%, #7e1966 65%, #c53755 85%, #ee603d 100%);
+  --header-btn-bg: rgba(255, 255, 255, 0.16);
+  --header-btn-border: rgba(255, 255, 255, 0.35);
+  --header-btn-color: #ffffff;
+  --pill-bg: rgba(255, 255, 255, 0.14);
+  --pill-border: rgba(255, 255, 255, 0.3);
+  --pill-text: #ffffff;
+  --pill-active-bg: rgba(255, 255, 255, 0.35);
+  --pill-active-text: #ffffff;
+  
+  --board-bg: rgba(255, 255, 255, 0.12);
+  --board-border: rgba(255, 255, 255, 0.35);
+  --board-shadow: 0 20px 45px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  --board-radius: 28px;
+  
+  --tile-bg: rgba(255, 255, 255, 0.28);
+  --tile-bg-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.22) 100%);
+  --tile-border: rgba(255, 255, 255, 0.45);
+  --tile-bevel: rgba(0, 0, 0, 0.18);
+  --tile-shadow: 0 4px 0 var(--tile-bevel), 0 8px 16px rgba(0, 0, 0, 0.22);
+  --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 4px 8px rgba(0, 0, 0, 0.18);
+  --tile-text: #ffffff;
+  --tile-radius: 14px;
+  --tile-text-shadow: 0 1px 4px rgba(255, 71, 87, 0.6);
+
+  --action-btn-bg: #ff4757;
+  --action-btn-bevel: #c42333;
+  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 24px rgba(255, 71, 87, 0.45);
+  --action-btn-text: #ffffff;
+  --accent-highlight: rgba(255, 71, 87, 0.22);
+
+  --card-bg: rgba(255, 255, 255, 0.14);
+  --card-border: rgba(255, 255, 255, 0.25);
+  --text-title: #ffffff;
+  --text-muted: #ffd2d8;
+  --modal-bg: rgba(38, 12, 58, 0.92);
+  --modal-border: rgba(255, 255, 255, 0.3);
+  --stat-box-bg: rgba(255, 255, 255, 0.08);
+  --blur-overlay-bg: rgba(35, 10, 52, 0.75);
+  --star-color: #ffd166;
+  --star-border: rgba(255, 209, 102, 0.6);
+  --star-bg: rgba(255, 209, 102, 0.18);
+}
+
+/* 4. TEMA: INDUSTRIAL USINADO */
+[data-theme="machined-industrial"] {
+  --theme-font: 'Share Tech Mono', 'Nunito', monospace;
+  --tile-font: 'Share Tech Mono', monospace;
+  --bg-canvas: #16171a;
+  --bg-gradient: 
+    radial-gradient(circle at 50% 20%, #272a31 0%, #141518 85%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 1px, transparent 1px, transparent 3px);
+  --header-btn-bg: #22252c;
+  --header-btn-border: #383c46;
+  --header-btn-color: #ff9e1b;
+  --pill-bg: #1e2026;
+  --pill-border: #343842;
+  --pill-text: #b0b5c0;
+  --pill-active-bg: #ff9e1b;
+  --pill-active-text: #141518;
+  
+  --board-bg: #1a1c21;
+  --board-border: #3c404a;
+  --board-shadow: 0 18px 42px rgba(0, 0, 0, 0.8), inset 0 2px 5px rgba(0, 0, 0, 0.85);
+  --board-radius: 28px;
+  
+  --tile-bg: #2b2e36;
+  --tile-bg-gradient: linear-gradient(180deg, #343741 0%, #202228 100%);
+  --tile-border: #424652;
+  --tile-bevel: #111215;
+  --tile-shadow: 0 4px 0 var(--tile-bevel), 0 6px 14px rgba(0, 0, 0, 0.6);
+  --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 3px 6px rgba(0, 0, 0, 0.4);
+  --tile-text: #ff9e1b;
+  --tile-radius: 12px;
+  --tile-text-shadow: 0 0 8px rgba(255, 158, 27, 0.6);
+
+  --action-btn-bg: #ff9e1b;
+  --action-btn-bevel: #b86904;
+  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 20px rgba(255, 158, 27, 0.4);
+  --action-btn-text: #141518;
+  --accent-highlight: rgba(255, 158, 27, 0.18);
+
+  --card-bg: #1e2026;
+  --card-border: #343842;
+  --text-title: #f1f3f7;
+  --text-muted: #8c92a0;
+  --modal-bg: #191b20;
+  --modal-border: #383c46;
+  --stat-box-bg: rgba(0, 0, 0, 0.4);
+  --blur-overlay-bg: rgba(20, 22, 26, 0.82);
+  --star-color: #ff9e1b;
+  --star-border: rgba(255, 158, 27, 0.55);
+  --star-bg: rgba(255, 158, 27, 0.15);
+}
+
+/* 5. TEMA: MARFIM DOURADO */
+[data-theme="golden-ivory"] {
+  --theme-font: 'Nunito', sans-serif;
+  --tile-font: 'Nunito', sans-serif;
+  --bg-canvas: #151517;
+  --bg-gradient: radial-gradient(circle at 50% 20%, #232220 0%, #111112 85%);
+  --header-btn-bg: #23211c;
+  --header-btn-border: rgba(197, 160, 89, 0.35);
+  --header-btn-color: #e5d3b0;
+  --pill-bg: #211f1a;
+  --pill-border: rgba(197, 160, 89, 0.3);
+  --pill-text: #cbb892;
+  --pill-active-bg: #c5a059;
+  --pill-active-text: #171510;
+  
+  --board-bg: #1c1a16;
+  --board-border: #9e7f3c;
+  --board-shadow: 0 18px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(197, 160, 89, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.7);
+  --board-radius: 28px;
+  
+  --tile-bg: #f8f4ec;
+  --tile-bg-gradient: linear-gradient(180deg, #fdfaf4 0%, #f4eee2 100%);
+  --tile-border: rgba(197, 160, 89, 0.25);
+  --tile-bevel: #d8cba9;
+  --tile-shadow: 0 4px 0 var(--tile-bevel), 0 6px 14px rgba(0, 0, 0, 0.22);
+  --tile-shadow-active: 0 2px 0 var(--tile-bevel), 0 3px 6px rgba(0, 0, 0, 0.15);
+  --tile-text: #99732b;
+  --tile-radius: 12px;
+  --tile-text-shadow: none;
+
+  --action-btn-bg: #c5a059;
+  --action-btn-bevel: #91702f;
+  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 20px rgba(197, 160, 89, 0.4);
+  --action-btn-text: #171510;
+  --accent-highlight: rgba(197, 160, 89, 0.18);
+
+  --card-bg: #201e19;
+  --card-border: rgba(197, 160, 89, 0.3);
+  --text-title: #fdfaf4;
+  --text-muted: #b8aa90;
+  --modal-bg: #1a1814;
+  --modal-border: rgba(197, 160, 89, 0.4);
+  --stat-box-bg: rgba(0, 0, 0, 0.35);
+  --blur-overlay-bg: rgba(19, 18, 15, 0.8);
+  --star-color: #e5b958;
+  --star-border: rgba(229, 185, 88, 0.55);
+  --star-bg: rgba(229, 185, 88, 0.15);
+}
+
+/* 6. TEMA SLATE DARK */
 [data-theme="slate-dark"] {
+  --theme-font: 'Nunito', sans-serif;
+  --tile-font: 'Nunito', sans-serif;
   --bg-canvas: #0b0f19;
   --bg-gradient: radial-gradient(circle at 50% 20%, #19253d 0%, #0b0f19 80%);
   --header-btn-bg: #1e293b;
@@ -65,6 +279,7 @@
   --board-bg: #0f1627;
   --board-border: #2a3754;
   --board-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  --board-radius: 28px;
   
   --tile-bg: #1e293b;
   --tile-bg-gradient: linear-gradient(180deg, #24334a 0%, #182333 100%);
@@ -73,21 +288,32 @@
   --tile-shadow: 0 5px 0 var(--tile-bevel), 0 8px 12px rgba(0, 0, 0, 0.5);
   --tile-shadow-active: 0 2px 0 var(--tile-bevel);
   --tile-text: #f8fafc;
+  --tile-radius: 12px;
+  --tile-text-shadow: none;
 
   --action-btn-bg: #f97316;
   --action-btn-bevel: #c2410c;
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 16px rgba(249, 115, 22, 0.4);
   --action-btn-text: #ffffff;
+  --accent-highlight: rgba(249, 115, 22, 0.16);
 
   --card-bg: #131b2e;
   --card-border: #2a3754;
   --text-title: #f8fafc;
   --text-muted: #94a3b8;
   --modal-bg: #131b2e;
+  --modal-border: #2a3754;
+  --stat-box-bg: rgba(0, 0, 0, 0.3);
+  --blur-overlay-bg: rgba(11, 15, 25, 0.8);
+  --star-color: #fbbf24;
+  --star-border: rgba(245, 158, 11, 0.5);
+  --star-bg: rgba(245, 158, 11, 0.1);
 }
 
-/* 3. TEMA MADEIRA NOBRE */
+/* 7. TEMA MADEIRA NOBRE */
 [data-theme="classic-wood"] {
+  --theme-font: 'Nunito', sans-serif;
+  --tile-font: 'Nunito', sans-serif;
   --bg-canvas: #1f140e;
   --bg-gradient: radial-gradient(circle at 50% 20%, #342217 0%, #170e0a 80%);
   --header-btn-bg: #382419;
@@ -102,6 +328,7 @@
   --board-bg: #1a100b;
   --board-border: #3d2619;
   --board-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);
+  --board-radius: 28px;
   
   --tile-bg: #deb887;
   --tile-bg-gradient: linear-gradient(180deg, #e8c79c 0%, #d4a974 100%);
@@ -110,54 +337,26 @@
   --tile-shadow: 0 5px 0 var(--tile-bevel), 0 8px 12px rgba(0, 0, 0, 0.5);
   --tile-shadow-active: 0 2px 0 var(--tile-bevel);
   --tile-text: #341c09;
+  --tile-radius: 12px;
+  --tile-text-shadow: none;
 
   --action-btn-bg: #c47d48;
   --action-btn-bevel: #8f5328;
   --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 16px rgba(196, 125, 72, 0.4);
   --action-btn-text: #ffffff;
+  --accent-highlight: rgba(196, 125, 72, 0.16);
 
   --card-bg: #2a1b12;
   --card-border: #432a1c;
   --text-title: #f5e6d3;
   --text-muted: #bda28e;
   --modal-bg: #271810;
-}
-
-/* 4. TEMA NEON CYBER */
-[data-theme="neon-night"] {
-  --bg-canvas: #090a14;
-  --bg-gradient: radial-gradient(circle at 50% 20%, #161933 0%, #06070d 80%);
-  --header-btn-bg: #14172c;
-  --header-btn-border: #00e5ff55;
-  --header-btn-color: #00e5ff;
-  --pill-bg: #101326;
-  --pill-border: #23294f;
-  --pill-text: #6973a6;
-  --pill-active-bg: #00e5ff;
-  --pill-active-text: #090a14;
-  
-  --board-bg: #080912;
-  --board-border: #00e5ff44;
-  --board-shadow: 0 0 30px rgba(0, 229, 255, 0.15), 0 16px 36px rgba(0, 0, 0, 0.9);
-  
-  --tile-bg: #111429;
-  --tile-bg-gradient: linear-gradient(180deg, #181d3d 0%, #0e1122 100%);
-  --tile-border: #00e5ff66;
-  --tile-bevel: #04050a;
-  --tile-shadow: 0 5px 0 var(--tile-bevel), 0 0 14px rgba(0, 229, 255, 0.2);
-  --tile-shadow-active: 0 2px 0 var(--tile-bevel);
-  --tile-text: #00e5ff;
-
-  --action-btn-bg: #ff007f;
-  --action-btn-bevel: #a60053;
-  --action-btn-shadow: 0 5px 0 var(--action-btn-bevel), 0 8px 20px rgba(255, 0, 127, 0.4);
-  --action-btn-text: #ffffff;
-
-  --card-bg: #111429;
-  --card-border: #23294f;
-  --text-title: #ffffff;
-  --text-muted: #8491c7;
-  --modal-bg: #12152b;
+  --modal-border: #432a1c;
+  --stat-box-bg: rgba(0, 0, 0, 0.3);
+  --blur-overlay-bg: rgba(26, 16, 11, 0.8);
+  --star-color: #fbbf24;
+  --star-border: rgba(245, 158, 11, 0.5);
+  --star-bg: rgba(245, 158, 11, 0.1);
 }
 
 /* ==========================================================================
@@ -178,7 +377,7 @@ html, body {
   background-color: var(--bg-canvas);
   background-image: var(--bg-gradient);
   color: var(--text-title);
-  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--theme-font, 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
@@ -1041,20 +1240,24 @@ html, body {
 .theme-options-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  margin-bottom: 16px;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 14px;
 }
 
 .theme-opt-btn {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--board-border);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 12px 16px;
   color: var(--text-title);
+  font-family: var(--theme-font, inherit);
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
@@ -1063,19 +1266,56 @@ html, body {
 
 .theme-opt-btn.active {
   border-color: var(--action-btn-bg);
-  background: rgba(231, 100, 73, 0.12);
+  background: var(--accent-highlight, rgba(238, 107, 85, 0.16));
+  color: var(--action-btn-bg);
 }
 
 .theme-swatch {
   width: 24px;
   height: 24px;
   border-radius: 6px;
+  flex-shrink: 0;
 }
 
-.theme-swatch.ivory { background: #ebe3d5; border: 2px solid #bfae98; }
+.theme-swatch.ivory { background: #efe8dc; border: 2px solid #d4c9b8; }
+.theme-swatch.neon-circuit { background: #070b18; border: 2px solid #00e5ff; box-shadow: 0 0 6px #00e5ff; }
+.theme-swatch.aurora { background: linear-gradient(135deg, #7e1966, #ee603d); border: 2px solid #ffffff; }
+.theme-swatch.industrial { background: #22242a; border: 2px solid #ff9e1b; box-shadow: 0 0 6px rgba(255, 158, 27, 0.4); }
+.theme-swatch.gold { background: #f8f4ec; border: 2px solid #c5a059; }
 .theme-swatch.slate { background: #1e293b; border: 2px solid #334155; }
 .theme-swatch.wood { background: #deb887; border: 2px solid #966735; }
-.theme-swatch.neon { background: #090a14; border: 2px solid #00e5ff; }
+
+/* Overrides específicos por tema */
+[data-theme="neon-circuit"] body {
+  background-size: 100% 100%, 28px 28px, 28px 28px;
+}
+[data-theme="neon-circuit"] .hero-title span {
+  text-shadow: 0 0 12px rgba(255, 179, 0, 0.7);
+}
+
+[data-theme="aurora-glass"] .board-container {
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+}
+[data-theme="aurora-glass"] .modal-card {
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+}
+[data-theme="aurora-glass"] .circle-btn {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+[data-theme="aurora-glass"] .hero-num {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+[data-theme="machined-industrial"] body {
+  background-size: 100% 100%, 4px 100%;
+}
+[data-theme="machined-industrial"] .board-container {
+  border-width: 3px;
+}
 
 .hidden {
   display: none !important;
